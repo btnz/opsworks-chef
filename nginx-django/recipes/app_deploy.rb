@@ -16,8 +16,9 @@ node[:deploy].each do | application, deploy|
     path deploy[:deploy_to]
   end
 
-opsworks_deploy do
-  deploy_data deploy
-  app webApp1
+  opsworks_deploy do
+    deploy_data deploy
+    app webApp1
+  end
 end
 
