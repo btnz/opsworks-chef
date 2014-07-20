@@ -8,6 +8,6 @@ version          '0.1.0'
 
 depends "nginx"
 depends "python"
-depends "gunicorn"
+#depends "gunicorn"
 
 recipe "deploy::app_deploy", "Deploy custom application"
