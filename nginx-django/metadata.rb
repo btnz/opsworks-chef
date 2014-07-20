@@ -10,4 +10,5 @@ depends "nginx"
 depends "python"
 depends "gunicorn"
 
+recipe "deploy::virtualenv", "Update virtualenv"
 recipe "deploy::app_deploy", "Deploy custom application"
