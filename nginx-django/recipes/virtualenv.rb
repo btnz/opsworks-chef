@@ -7,7 +7,8 @@
 # All rights reserved - Do Not Redistribute
 #
 
-include_recipe "python"
+include_recipe 'deploy'
+include_recipe 'python'
 
 python_pip "#{node[:deploy][application][:current_path]}/requirements.txt" do
   virtualenv current_dir
