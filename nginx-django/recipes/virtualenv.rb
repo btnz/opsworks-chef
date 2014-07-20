@@ -9,8 +9,7 @@
 
 include_recipe "python"
 
-current_dir = ::File.join(deploy[:deploy_to], 'current')
-python_pip "#{current_dir}/requirements.txt" do
+python_pip "#{node[:deploy][application][:current_path]}/requirements.txt" do
   virtualenv current_dir
   action :install
 end
