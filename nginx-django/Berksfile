@@ -1,0 +1,1 @@
+cookbook 'python', git: 'git://github.com/poise/python.git'
