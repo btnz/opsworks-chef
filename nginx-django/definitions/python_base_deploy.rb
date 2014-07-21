@@ -2,8 +2,6 @@ define :python_base_setup do
   deploy = params[:deploy_data]
   application = params[:app_name]
 
-  # Possible install OS packages here
-
   include_recipe "python::default"
 
   directory "#{deploy[:deploy_to]}/shared" do
@@ -27,10 +25,11 @@ define :python_base_setup do
   packages.each do |name, ver|
     python_pip name do
       version ver if ver && ver.length > 0
-      virtualenv venv_path
+      virtualenv virtualenv_path
       user deploy[:user]
       group deploy[:group]
       action :install
     end
   end
+
 end
