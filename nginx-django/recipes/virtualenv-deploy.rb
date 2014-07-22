@@ -24,8 +24,4 @@ node[:deploy].each do | application, deploy|
       end
     end
   end
-#  python_pip "#{virtualenv_path}/requirements.txt" do
-#    virtualenv virtualenv_path
-#    action :install
-#  end
 end
