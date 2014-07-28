@@ -1,14 +1,18 @@
-upstream <%= @deploy[:app_name] %> {
-  server unix:<%= @gunicorn[:sock_file] fail_timeout=0 %>
+upstream <%= @application %> {
+  server unix:<%= @deploy_data[:deploy_to]%>/gunicorn.sock fail_timeout=0;
 }
 
 server {
   listen   80;
-  server_name  <%= @application[:domains].join(" ") %> <%= node[:hostname] %>;
-  access_log  <%= node[:nginx][:log_dir] %>/<%= @application[:domains].first %>.access.log;
+  server_name  <%= @deploy_data[:domains].join(" ") %> <%= node[:hostname] %>;
+  access_log  <%= node[:nginx][:log_dir] %>/<%= @deploy_data[:domains].first %>.access.log;
 
   location /static/ {
-    alias   <%= @application[:absolute_document_root] %>/static/;
+    alias   <%= @deploy_data[:deploy_to] %>/static/;
+  }
+
+  location / {
+    proxy_pass http://<%= @application %>;
   }
   
   # Block all svn access
@@ -29,33 +33,3 @@ server {
   }
   
 }
-
-<% if @application[:ssl_support] %>
-server {
-  listen   443;
-  server_name  <%= @application[:domains].join(" ") %> <%= node[:hostname] %>;
-  access_log  <%= node[:nginx][:log_dir] %>/<%= @application[:domains].first %>-ssl.access.log;
-  
-  ssl on;
-  ssl_certificate /etc/nginx/ssl/<%= @application[:domains].first %>.crt;
-  ssl_certificate_key /etc/nginx/ssl/<%= @application[:domains].first %>.key;
-  <% if @application[:ssl_certificate_ca] -%>
-  ssl_client_certificate /etc/nginx/ssl/<%= @application[:domains].first %>.ca;
-  <% end -%>
-
-  location /static/ {
-    alias   <%= @application[:absolute_document_root] %>/static/;
-    index  index.html index.htm index.php;
-  }
-  
-  # Block all svn access
-  if ($request_uri ~* ^.*\.svn.*$) {
-     return 404;
-  }
-  
-  # Block all git access
-  if ($request_uri ~* ^.*\.git.*$) {
-     return 404;
-  }
-}
-<% end %>

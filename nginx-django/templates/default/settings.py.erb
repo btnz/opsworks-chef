@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = '@j@%(pownd1hh(tegu0w4ck53=c39x@4(*1k08__ltkvtk$9-!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = <%= @debug ? "True" : "False" %>
+DEBUG = <%= @django_settings["debug"] ? "True" : "False" %>
 
 TEMPLATE_DEBUG = True
 
@@ -36,6 +36,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    '<%=@application%>',
+    'south',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -58,7 +60,7 @@ WSGI_APPLICATION = 'webApp1.wsgi.application'
 DATABASES = {
     'default': {
         'NAME': '<%= @django_database["name"] %>',
-        'ENGINE': 'django.db.backends.<%= @django_database["adapter"] %>',
+        'ENGINE': 'django.db.backends.<%= @django_database["engine"] %>',
         'USER': '<%= @django_database["username"] %>',
         'PASSWORD': '<%= @django_database["password"] %>',
         'HOST': '<%= @django_database["host"] %>',

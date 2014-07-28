@@ -4,6 +4,14 @@ define :python_base_setup do
 
   include_recipe "python::default"
 
+  os_packages = deploy["os_packages"] ? deploy["os_packages"] : node["deploy_python"]["os_packages"]
+    os_packages.each do |pkg,ver|
+    package pkg do
+      action :install
+      version ver if ver && ver.length > 0
+    end
+  end
+
   directory "#{deploy[:deploy_to]}/shared" do
     group deploy[:group]
     owner deploy[:user]

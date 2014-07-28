@@ -10,8 +10,8 @@
 include_recipe "python"
 
 node[:deploy].each do | application, deploy|
-  virtualenv_path = ::File.join(deploy[:deploy_to], "shared", "env")
-  app_dir = ::File.join(deploy[:deploy_to], "current")
+  virtualenv_path = node[:virtualenv_path]
+  app_dir = ::File.join(deploy[:deploy_to], "current", application)
   File.open("#{app_dir}/requirements.txt") do | file_handle |
     file_handle.each_line do | line |
       package, ver = line.split("==")
