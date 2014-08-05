@@ -16,7 +16,7 @@ pidfile=$APP_DIR/gunicorn.pid
 case "$1" in
   start)
     .  $APP_DIR/shared/env/bin/activate
-    cd $APP_DIR/current/<%=@app_name %>
+    cd $APP_DIR/current/
     $APP_DIR/shared/env/bin/gunicorn --pid $pidfile -c $CONF --daemon <%=@app_name%>.wsgi:application
     ;;
   restart|force-reload|reload)
